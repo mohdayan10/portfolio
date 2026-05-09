@@ -1,16 +1,38 @@
-# React + Vite
+# Portfolio — Mohammed Ayan
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site built with React + Vite. Animated 3D hero, parallax tilt cards, scroll-driven motion, and a live GitHub contribution graph.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **Vite 5** — app shell and dev tooling
+- **Three.js** via **@react-three/fiber** and **@react-three/drei** — animated icosahedron in the hero
+- **framer-motion** — entrance and scroll-into-view animations
+- **react-parallax-tilt** — interactive cards and buttons
+- **react-github-calendar** — contribution heatmap (themed to the site accent)
 
-## React Compiler
+## Sections
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `Hero` — name lockup with an auto-rotating distorted icosahedron
+- `Intro` — short positioning statement
+- `Services` — branding & marketing service list
+- `GitHubActivity` — live contribution calendar for [@mohdayan10](https://github.com/mohdayan10)
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev      # start dev server
+npm run build    # production build to dist/
+npm run preview  # preview the production build
+npm run lint     # run eslint
+```
+
+## Project layout
+
+```
+src/
+  App.jsx       # all sections (Hero, Intro, Services, GitHubActivity)
+  App.css       # section styles
+  index.css     # global styles
+  main.jsx      # entry point
+```
