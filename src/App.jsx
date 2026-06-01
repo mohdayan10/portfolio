@@ -59,8 +59,8 @@ const CodeWindow = () => {
 const GMAIL = 'https://mail.google.com/mail/?view=cm&fs=1&to=mohammedayan10@gmail.com';
 const GITHUB = 'https://github.com/mohdayan10';
 const LINKEDIN = 'https://linkedin.com/in/mohammed-ayan10';
-// Get a free key at https://web3forms.com (verify your email) and paste it here.
-const WEB3FORMS_KEY = '89a5ec23-b45a-4030-83f2-b684909ec166';
+// Set VITE_WEB3FORMS_KEY in a local .env file (see .env.example). Get a free key at https://web3forms.com.
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '';
 
 const IconGitHub = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
@@ -439,7 +439,7 @@ const Contact = () => {
     e.preventDefault();
     const form = e.target;
     const fd = new FormData(form);
-    const keyReady = WEB3FORMS_KEY && WEB3FORMS_KEY !== 'YOUR_ACCESS_KEY_HERE';
+    const keyReady = Boolean(WEB3FORMS_KEY);
 
     // No access key yet → open a pre-filled email so the form still works.
     if (!keyReady) {
