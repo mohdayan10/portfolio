@@ -162,14 +162,14 @@ button { font-family: inherit; cursor: pointer; }
   text-align: center;
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
-  font-size: clamp(3rem, 15vw, 14rem);
+  font-size: clamp(2.5rem, 13vw, 13rem);
   line-height: 0.92;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   text-transform: uppercase;
   z-index: 1;
   pointer-events: none;
 }
-.hero-title .line { display: block; }
+.hero-title .line { display: block; white-space: nowrap; }
 .hero-title .mask {
   display: inline-block;
   overflow: hidden;
