@@ -6,16 +6,15 @@ import { GitHubCalendar } from 'react-github-calendar';
 /* --------------------------- Code window subject --------------------------- */
 const CodeWindow = () => {
   const lines = [
-    [{ t: 'com', v: '// developer.js' }],
+    [{ t: 'com', v: '# rag_pipeline.py' }],
     [],
-    [{ t: 'kw', v: 'const' }, { t: 'def', v: ' ayan ' }, { t: 'pn', v: '= {' }],
-    [{ t: 'key', v: '  name' }, { t: 'pn', v: ': ' }, { t: 'str', v: "'Mohammed Ayan'" }, { t: 'pn', v: ',' }],
-    [{ t: 'key', v: '  role' }, { t: 'pn', v: ': ' }, { t: 'str', v: "'Full-Stack AI Engineer'" }, { t: 'pn', v: ',' }],
-    [{ t: 'key', v: '  stack' }, { t: 'pn', v: ': [' }, { t: 'str', v: "'React'" }, { t: 'pn', v: ', ' }, { t: 'str', v: "'FastAPI'" }, { t: 'pn', v: ', ' }, { t: 'str', v: "'AWS'" }, { t: 'pn', v: '],' }],
-    [{ t: 'key', v: '  shipping' }, { t: 'pn', v: ': ' }, { t: 'kw', v: 'true' }, { t: 'pn', v: ',' }],
-    [{ t: 'pn', v: '};' }],
+    [{ t: 'pn', v: '@app.' }, { t: 'def', v: 'post' }, { t: 'pn', v: '(' }, { t: 'str', v: "'/ask'" }, { t: 'pn', v: ')' }],
+    [{ t: 'kw', v: 'async def' }, { t: 'fn', v: ' ask' }, { t: 'pn', v: '(' }, { t: 'def', v: 'q' }, { t: 'pn', v: ': ' }, { t: 'def', v: 'Query' }, { t: 'pn', v: '):' }],
+    [{ t: 'key', v: '    docs' }, { t: 'pn', v: ' = ' }, { t: 'kw', v: 'await' }, { t: 'def', v: ' index' }, { t: 'pn', v: '.' }, { t: 'def', v: 'search' }, { t: 'pn', v: '(' }, { t: 'key', v: 'q.text' }, { t: 'pn', v: ', ' }, { t: 'key', v: 'top_k' }, { t: 'pn', v: '=' }, { t: 'kw', v: '5' }, { t: 'pn', v: ')' }],
+    [{ t: 'key', v: '    ctx' }, { t: 'pn', v: ' = ' }, { t: 'def', v: 'rerank' }, { t: 'pn', v: '(' }, { t: 'key', v: 'docs' }, { t: 'pn', v: ')[:' }, { t: 'kw', v: '3' }, { t: 'pn', v: ']' }],
+    [{ t: 'kw', v: '    return' }, { t: 'def', v: ' llm' }, { t: 'pn', v: '.' }, { t: 'def', v: 'stream' }, { t: 'pn', v: '(' }, { t: 'def', v: 'prompt' }, { t: 'pn', v: '(' }, { t: 'key', v: 'q' }, { t: 'pn', v: ', ' }, { t: 'key', v: 'ctx' }, { t: 'pn', v: '))' }],
     [],
-    [{ t: 'def', v: 'ayan' }, { t: 'pn', v: '.' }, { t: 'fn', v: 'build' }, { t: 'pn', v: '(' }, { t: 'def', v: 'idea' }, { t: 'pn', v: ')' }, { t: 'com', v: '  // → product' }],
+    [{ t: 'com', v: '# retrieve → rerank → generate' }],
   ];
 
   const [shown, setShown] = useState(0);
@@ -29,7 +28,7 @@ const CodeWindow = () => {
     <div className="code-window">
       <div className="code-bar">
         <span className="dot" /><span className="dot" /><span className="dot" />
-        <span className="code-file">ayan.js</span>
+        <span className="code-file">rag_pipeline.py</span>
       </div>
       <div className="code-body">
         {lines.map((line, i) => (
@@ -80,7 +79,23 @@ const IconMail = (props) => (
 );
 
 /* ----------------------------- Navigation ----------------------------- */
+const NAV_LINKS = [
+  ['#top', 'Home'],
+  ['#about', 'About Me'],
+  ['#experience', 'Experience'],
+  ['#projects', 'Projects'],
+  ['#contact', 'Contact'],
+];
+
 const Nav = () => {
+  const [open, setOpen] = useState(false);
+
+  // Lock body scroll while the mobile menu is open.
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
   return (
     <motion.header
       className="nav"
@@ -88,14 +103,12 @@ const Nav = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.165, 0.84, 0.44, 1] }}
     >
-      <a href="#top" className="nav-brand">PORTFOLIO<span>.</span></a>
+      <a href="#top" className="nav-brand" onClick={() => setOpen(false)}>PORTFOLIO<span>.</span></a>
 
       <nav className="nav-pill">
-        <a href="#top">Home</a>
-        <a href="#about">About Me</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+        {NAV_LINKS.map(([href, label]) => (
+          <a key={href} href={href}>{label}</a>
+        ))}
       </nav>
 
       <div className="nav-actions">
@@ -108,7 +121,32 @@ const Nav = () => {
         <a className="icon-btn" href={GMAIL} target="_blank" rel="noopener noreferrer" aria-label="Email">
           <IconMail width={17} height={17} />
         </a>
+        <button
+          className="icon-btn menu nav-toggle"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span className={`burger ${open ? 'is-open' : ''}`}><i /><i /><i /></span>
+        </button>
       </div>
+
+      <nav className={`mobile-menu ${open ? 'open' : ''}`}>
+        {NAV_LINKS.map(([href, label]) => (
+          <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
+        ))}
+        <div className="mobile-socials">
+          <a className="icon-btn" href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <IconGitHub width={17} height={17} />
+          </a>
+          <a className="icon-btn" href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <IconLinkedIn width={16} height={16} />
+          </a>
+          <a className="icon-btn" href={GMAIL} target="_blank" rel="noopener noreferrer" aria-label="Email">
+            <IconMail width={17} height={17} />
+          </a>
+        </div>
+      </nav>
     </motion.header>
   );
 };
@@ -149,6 +187,19 @@ const Hero = () => {
           </span>
         </h1>
 
+        {/* mobile-only intro — desktop keeps the editorial title above */}
+        <motion.div
+          className="hero-intro"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          <span className="hero-badge"><span className="dot-live" />Available for work</span>
+          <p className="hero-name">Mohammed Ayan</p>
+          <span className="hero-role">Full-Stack AI Engineer</span>
+          <p className="hero-bio">I build robust, scalable systems for high-throughput AI workloads.</p>
+        </motion.div>
+
         <motion.div
           className="hero-subject"
           initial={{ opacity: 0, scale: 0.94 }}
@@ -156,6 +207,16 @@ const Hero = () => {
           transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
         >
           <CodeWindow />
+        </motion.div>
+
+        <motion.div
+          className="hero-cta"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+        >
+          <a href="#projects" className="btn">View Work</a>
+          <a href="#contact" className="btn btn-solid">Let's Talk →</a>
         </motion.div>
 
         <motion.div
